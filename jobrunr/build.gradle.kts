@@ -11,9 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.kagkarlsson:db-scheduler:15.1.1")
-    implementation("org.quartz-scheduler:quartz:2.3.2")
-    implementation("org.jobrunr:jobrunr:7.4.1")
+    implementation("org.jobrunr:jobrunr:7.4.1");
     implementation("org.postgresql:postgresql:42.7.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.3")
     testImplementation(kotlin("test"))
@@ -27,7 +25,7 @@ kotlin {
 }
 
 application {
-    mainClass = "org.example.MainKt"
+    mainClass = "jobrunr.MainKt"
 }
 
 tasks {

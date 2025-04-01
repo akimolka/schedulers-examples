@@ -3,3 +3,4 @@ plugins {
 }
 rootProject.name = "jobrunr-example"
 
+include("db", "jobrunr", "quartz")
