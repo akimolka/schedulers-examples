@@ -1,0 +1,38 @@
+@startuml
+participant "FetchCandidates" as strategy
+participant "TaskRepository" as rep
+participant "Executor" as exec
+participant "ExecutorService" as thpool
+participant "Lambda" as lambda
+participant "ExecutePicked"
+participant "Task resolver" as resolver
+
+activate strategy
+strategy -> rep++: getDue(now, maxCount)
+rep -> rep: SELECT задач из бд, для\nкоторых наступило\nзапланированное\nвремя выполнения
+strategy <<-- rep--: List<Execution>
+
+loop для каждого Execution
+   strategy -> lambda**: create
+   strategy -> exec: addToQueue(Lambda)
+   exec ->> thpool: execute(Lambda)
+   strategy <<-- exec--
+end
+deactivate strategy
+
+thpool -> lambda++: run()
+lambda -> rep++: Проверить, что никакой другой сервер не взял эту задачу.\nОтметить задачу как picked
+return Optional<Execution>
+
+lambda -> ExecutePicked**: create
+lambda -> ExecutePicked++: run()
+ExecutePicked -> resolver++: resolve(execution name)
+return Optional<Task>
+ExecutePicked -> ExecutePicked: выполняет execute\nу task
+return
+destroy ExecutePicked
+lambda -> strategy++: если задач в батче осталось меньше критического кол-ва, будет поток FetchCandidates
+destroy lambda
+
+
+@enduml
