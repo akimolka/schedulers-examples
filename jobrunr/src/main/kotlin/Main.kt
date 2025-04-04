@@ -95,7 +95,7 @@ fun main(args: Array<String>) {
         .initialize()
 
 
-    BackgroundJob.scheduleRecurrently("my-recurring-job", "*/5 * * * * *") {
-        println("Run task at ${OffsetDateTime.now()}")
+    BackgroundJob.scheduleRecurrently("my-recurring-job", "*/30 * * * * *") {
+        Thread.sleep(10000)
     }
 }
