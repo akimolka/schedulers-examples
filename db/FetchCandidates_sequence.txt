@@ -3,7 +3,7 @@ participant "FetchCandidates" as strategy
 participant "TaskRepository" as rep
 participant "Executor" as exec
 participant "ExecutorService" as thpool
-participant "Lambda" as lambda
+participant "Runnable" as lambda
 participant "ExecutePicked"
 participant "Task resolver" as resolver
 
@@ -25,10 +25,21 @@ lambda -> rep++: Проверить, что никакой другой серв
 return Optional<Execution>
 
 lambda -> ExecutePicked**: create
+note left
+Если вернулся null, то
+ExecutePicked не создаётся
+и не запускается
+end note
 lambda -> ExecutePicked++: run()
 ExecutePicked -> resolver++: resolve(execution name)
 return Optional<Task>
-ExecutePicked -> ExecutePicked: выполняет execute\nу task
+ExecutePicked -> ExecutePicked: выполняет execute\nу task, если resolve\nбыл успешный
+ExecutePicked -> ExecutePicked: выполняет\nCompletionHandler,\nкоторый вернул\nвызов execute
+note right
+RecurringTask в
+CompletionHandler
+перепланирует задачу
+end note
 return
 destroy ExecutePicked
 lambda -> strategy++: если задач в батче осталось меньше критического кол-ва, будет поток FetchCandidates
