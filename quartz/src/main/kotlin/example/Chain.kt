@@ -2,7 +2,6 @@ package quartz.example
 
 import org.quartz.*
 import org.quartz.JobBuilder.newJob
-import org.quartz.SimpleScheduleBuilder.simpleSchedule
 import org.quartz.TriggerBuilder.newTrigger
 import org.quartz.impl.StdSchedulerFactory
 

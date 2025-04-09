@@ -95,7 +95,7 @@ fun main(args: Array<String>) {
         .initialize()
 
 
-    BackgroundJob.scheduleRecurrently("my-recurring-job", "*/30 * * * * *") {
+    BackgroundJob.scheduleRecurrently("my-recurring-job", "1 * * * * *") {
         Thread.sleep(10000)
     }
 }
